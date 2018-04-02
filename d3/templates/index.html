@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <title>reddit conversation network</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}?version=32">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='d3-lib.js') }}"></script>
+
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function() {-->
+           <!--$("#btn") .click(function(e) {-->
+              <!--var jsonData = {};-->
+              <!--var formData = $("#link-form").serializeArray();-->
+
+              <!--$.each(formData, function() {-->
+                 <!--if (jsonData[this.name]) {-->
+                     <!--if (!jsonData[this.name].push) {-->
+                         <!--jsonData[this.name] = [jsonData[this.name]];-->
+                     <!--}-->
+                     <!--jsonData[this.name].push(this.value || '');-->
+                 <!--} else {-->
+                     <!--jsonData[this.name] = this.value || '';-->
+                 <!--}-->
+              <!--});-->
+<!--//              console.log(jsonData);-->
+
+
+<!--//               var str = JSON.stringify(JsonExport);-->
+<!--//               var obj = JSON.parse(jsonData);-->
+<!--//               var jsonLink = "json-link.json";-->
+<!--//               var file = new File(jsonLink, "write");-->
+<!--//-->
+<!--//               file.open();-->
+<!--//               file.writeline(jsonData);-->
+<!--//               file.close();-->
+
+               <!--var fs = require("chai").assert;-->
+               <!--fs.writeFile("json-link.json", jsonData, (err) => {-->
+                   <!--if (err) {-->
+                       <!--console.log(err);-->
+                       <!--return;-->
+                   <!--}-->
+                   <!--console.log("json created");-->
+               <!--});-->
+
+              <!--$.ajax(-->
+                  <!--{-->
+                      <!--data: jsonData-->
+                  <!--});-->
+
+              <!--e.preventDefault();-->
+           <!--});-->
+        <!--});-->
+    <!--</script>-->
+</head>
+
+<body>
+<img src="{{ url_for('static', filename='icon.png') }}" style="width: 5%">
+<h1 style="float: left">Visualizing Reddit Discussions</h1>
+
+    <p id="link"></p>
+
+    <form id="myform" action="{{ url_for('handle_data') }}" method="POST" target="_blank">
+        <input placeholder="Paste in a link to a Reddit thread" name="projectFilepath" type="text" size="100">
+        <input type="submit" id="btn"></input>
+        <!--<input type="submit" onclick="return showLink();"/>-->
+    </form>
+    <br>
+
+    <p style="font-family: monospace; color: darkslategrey">Your result here: <div id="preview"></div><a href="" id="form_output"></a></p>
+
+<br>
+
+<!--<script>-->
+<!--function showLink() {-->
+<!--var inputlink = document.getElementById("input_link").value;-->
+<!--document.getElementById("link").innerHTML = inputlink;-->
+<!--}-->
+<!--</script>-->
+
+<!--<svg style='width: 500px; height: 500px; background-color: #cce0ff;'> </svg>-->
+<div class="clearfix">
+        <!--<h4 id="post_title" style="text-align: center; font-family: monospace;"></h4>-->
+        <div class="topic_style">
+            <div id="topic_title" align="center"></div>
+        </div>
+
+
+        <div id="chart" align="center"></div>
+            <script src="{{ url_for('static', filename='d3.js') }}?version=42"></script>
+    </div>
+
+    <br>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myform').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url : $(this).attr('action') || window.location.pathname,
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        $("#form_output").html(data);
+                    },
+                    error: function (jXHR, textStatus, errorThrown) {
+                        alert("Something went wrong. Make sure the URL is a reddit discussion link.");
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!--<script type="text/javascript">-->
+        <!--$( '#form_output' ).each(function(){-->
+            <!--this.reset();-->
+        <!--});-->
+    <!--</script>-->
+
+    <!--<form id="link-form">-->
+        <!--<input required="required" type="text" placeholder="Paste in a link to a Reddit thread" name="reddit-link" size="100"/>-->
+        <!--<input type="submit" id="btn" name="btn" value="Search"/>-->
+    <!--</form>-->
+
+    <!--<div class="clearfix">-->
+        <!--<script src="d3.js?version=26"></script>-->
+    <!--</div>-->
+
+
+<!--<form action="action_page.php">-->
+<!--<input type="text" name="link" placeholder="Paste in a link to a Reddit thread"><br>-->
+<!--<input type="submit" value="Go">-->
+<!--</form>-->
+<!--<script>-->
+    <!--$.getJSON("http://reddit.com/.json?jsonp=?", function(json) {-->
+        <!--articles = json["data"]["children"];-->
+    <!--url = "http://reddit.com"+articles[0]["data"]["permalink"];-->
+    <!--console.log(url);-->
+    <!--});-->
+<!--</script>-->
+</body>
